@@ -1,0 +1,34 @@
+﻿@model u21451193_HW06.Models.product
+
+<input type="text" name="simplAttr" id="Name" class="form-control" placeholder="@Model.product_name" required="" />
+<br />
+<input type="text" name="simplAttr" id="Year" class="form-control" placeholder="@Model.model_year" required="" />
+<br />
+<input type="text" name="simplAttr" id="Price" class="form-control" placeholder="@Model.list_price" required="" />
+<br />
+
+<label for="drop-down">Brand:</label>
+<select name="drop-down" id="Brand">
+    @foreach (var b in ViewBag.brand)
+    {
+        <option value="@b.brand_id" id="brandID"> @b.brand_id - @b.brand_name</option>
+    }
+</select>
+<br />
+
+<label for="drop-down">Category:</label>
+<select name="drop-down" id="Category">
+    @foreach (var c in ViewBag.category)
+    {
+        <option value="@c.category_id" id="catID"> @c.category_id - @c.category_name</option>
+    }
+</select>
+<br />
+
+
+<div class="form-group col-md-6">
+    <div style="float: right; display:inline-block;">
+        <input class="btn btn-primary" name="submitButton" id="btnSave" value="Save" type="button">
+    </div>
+</div>
+<br />

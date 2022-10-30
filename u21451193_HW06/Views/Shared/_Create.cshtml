@@ -1,0 +1,74 @@
+﻿@model u21451193_HW06.Models.product
+
+<h2>Create</h2>
+
+<input type="text" name="simplAttr" id="Name" class="form-control" placeholder="Product Name" required="" />
+<br />
+<input type="text" name="simplAttr" id="Year" class="form-control" placeholder="Year" required="" />
+<br />
+<input type="text" name="simplAttr" id="Price" class="form-control" placeholder="Price" required="" />
+<br />
+
+<label for="drop-down">Brand:</label>
+<select name="drop-down">
+    @foreach (var b in ViewBag.brand)
+    {
+        <option value="@b.brand_id" id="Brand"> @b.brand_id - @b.brand_name</option>
+    }
+</select>
+<br />
+
+<label for="drop-down">Category:</label>
+<select name="drop-down">
+    @foreach (var c in ViewBag.category)
+    {
+        <option value="@c.category_id" id="Category"> @c.category_id - @c.category_name</option>
+    }
+</select>
+<br />
+
+
+<div class="form-group col-md-6">
+    <div style="float: right;">
+        <button class="btn btn-primary" id="btnSave" value="Save" type="button"> Save </button>
+    </div>
+</div>
+<br />
+
+
+@section Scripts{
+    <script type="text/javascript">
+        
+        $(function () {
+            $("#btnSave").click(function () {
+                var sentProduct = {
+                    product_name: $("#Name").val(),
+                    model_year: $("#Year").val(),
+                    list_price: $("#Price").val(),
+                    brand_id: $("#Brand").val(),
+                    category_id: $("#Category").val()
+                };
+                console.log(sentProduct);
+                $.ajax({
+                    type: "POST",
+                    url: "/products/AddProduct",
+                    data: JSON.stringify(sentProduct),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (r) {
+                        alert("Product successfully added: ");
+                    },
+                    failure: function (response) {
+                        alert("an error occure");
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+                console.log(request);
+                return false;
+            });
+        });
+
+    </script>
+}

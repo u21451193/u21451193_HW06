@@ -1,0 +1,88 @@
+﻿@model PagedList.PagedList<u21451193_HW06.Models.order_items>
+@using Newtonsoft.Json
+
+<h2>Orders</h2>
+
+@using (Html.BeginForm("Index", "order_items", FormMethod.Post))
+{
+    <label for="datePicker">Date: </label>
+    <input type="date" id="datePicker" name="datePicker" style="height:34px; margin-top: 7px;" />
+    <input type="submit" value="Search" class="btn-success btn" id="btnDate"/>
+}
+
+<br />
+<table class="table">
+    @foreach (var group in Model.GroupBy(item => new { item.order_id, item.order.order_date }))
+    {
+        decimal orderTotal = 0;
+        <thead>
+            <tr>
+                <th style="font-size: 26px"><strong>Order @group.Key.order_id - @group.Key.order_date.ToString("yyyy/MM/dd")</strong></th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>
+                    Product Name
+                </th>
+                <th>
+                    List Price
+                </th>
+                <th>
+                    Quantity
+                </th>
+                <th>
+                    Total
+                </th>
+                <th></th>
+            </tr>
+            <!-- Table for order_items -->
+            @foreach (var item in group)
+            {
+                var sum = item.list_price * item.quantity;
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.product.product_name)</td>
+                    <td>@Html.DisplayFor(modelItem => item.product.list_price)</td>
+                    <td>@Html.DisplayFor(modelItem => item.quantity)</td>
+                    <td>@Html.DisplayFor(modelItem => sum)</td>
+                    @{orderTotal = orderTotal + sum;}
+                </tr>
+            }
+            <tr>
+                <td></td>
+                <td></td>
+                <td><strong>Grand Total</strong></td>
+                <td><strong>@orderTotal</strong></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+
+
+    }
+
+</table>
+<ul class="pagination pagination-sm">
+    @{
+        if (!Model.IsFirstPage)
+        {
+            <li class="page-item"><a class="page-link" href="@Url.Action("Index", "order_items", new { pageIndex = 1 })">First</a></li>
+            <li class="page-item"><a class="page-link" href="@Url.Action("Index", "order_items", new { pageIndex = Model.PageNumber -1 })">Prev</a></li>
+        }
+        if (!Model.IsLastPage)
+        {
+            <li class="page-item"><a class="page-link" href="@Url.Action("Index", "order_items", new { pageIndex = Model.PageNumber + 1 })">Next</a></li>
+            <li class="page-item"><a class="page-link" href="@Url.Action("Index", "order_items", new { pageIndex = 473 })">Last</a></li>
+        }
+
+    }
+</ul>
+
+
